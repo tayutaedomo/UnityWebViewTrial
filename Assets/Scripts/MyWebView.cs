@@ -32,8 +32,9 @@ public class MyWebView : MonoBehaviour {
             DebugText.text = msg;
         });
 
-        var url = "file://" + m_filePath;
+        // var url = "file://" + m_filePath;
         // var url = "https://google.co.jp";
+        var url = "https://tayutaedomo-webview.herokuapp.com/MyWebView.html";
         Debug.Log(url);
 
         webview.LoadURL(url);
