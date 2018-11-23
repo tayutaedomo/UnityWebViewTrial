@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GoogleSignin.unity
     guid: d1f2a5cbdcf074da1b2e824274419b9e
+  - enabled: 1
+    path: Assets/Scenes/InstaVRWebApp.unity
+    guid: 1a43cc685c06c440fbbbc7df71abc286
   m_configObjects: {}

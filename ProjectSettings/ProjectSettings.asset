@@ -153,6 +153,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: net.tayutaedomo.UnityWebViewTrial
+    iOS: net.tayutaedomo.UnityWebViewTrial
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
