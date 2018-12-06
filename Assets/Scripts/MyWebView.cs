@@ -10,6 +10,9 @@ using UnityEngine.UI;
  */
 public class MyWebView : MonoBehaviour {
 
+    WebViewObject webview;
+    bool webview_disabled = false;
+
 	// Inspector で画面上に配置した GUI Text にアタッチする
 	public Text DebugText;
 
@@ -22,7 +25,8 @@ public class MyWebView : MonoBehaviour {
 		PrepareHTML();
 
 		// このスクリプトがアタッチされているGameObjectからWebViewObjectを取得する
-		var webview = GetComponent<WebViewObject>();
+		//var webview = GetComponent<WebViewObject>();
+		webview = GetComponent<WebViewObject>();
 
 		// WebViewObject の初期化時にWebページ側から呼び出すことができるコールバック関数を定義する。
 		// Web側からコールバック関数呼び出すには、リンク要素の href 属性などURLを指定する箇所で
@@ -33,7 +37,8 @@ public class MyWebView : MonoBehaviour {
 			DebugText.text = msg;
 
 			if(Regex.IsMatch(msg, @"^fuga")) {
-				webview.SetVisibility(false);
+                webview_disabled = true;
+				//webview.SetVisibility(false);
 			}
 		});
 
@@ -49,6 +54,10 @@ public class MyWebView : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update() {
+        if (webview_disabled) {
+            webview_disabled = false;
+		    webview.SetVisibility(false);
+        }
 	}
 
 	void PrepareHTML() {
