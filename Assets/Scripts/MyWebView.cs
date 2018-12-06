@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,46 +10,50 @@ using UnityEngine.UI;
  */
 public class MyWebView : MonoBehaviour {
 
-    // Inspector で画面上に配置した GUI Text にアタッチする
-    public Text DebugText;
+	// Inspector で画面上に配置した GUI Text にアタッチする
+	public Text DebugText;
 
-    string m_filePath;
+	string m_filePath;
 
-    // Use this for initialization
-    void Start () {
-        m_filePath = Path.Combine(Application.persistentDataPath, "sample.html");
-        Debug.Log (m_filePath);
-        PrepareHTML();
+	// Use this for initialization
+	void Start() {
+		m_filePath = Path.Combine(Application.persistentDataPath, "sample.html");
+		Debug.Log (m_filePath);
+		PrepareHTML();
 
-        // このスクリプトがアタッチされているGameObjectからWebViewObjectを取得する
-        var webview = GetComponent<WebViewObject>();
+		// このスクリプトがアタッチされているGameObjectからWebViewObjectを取得する
+		var webview = GetComponent<WebViewObject>();
 
-        // WebViewObject の初期化時にWebページ側から呼び出すことができるコールバック関数を定義する。
-        // Web側からコールバック関数呼び出すには、リンク要素の href 属性などURLを指定する箇所で
-        // 'unit:(任意の文字列)' のように指定すると、コールバック関数が呼び出される。
-        // このとき、"(任意の文字列)"の部分が関数の引数として渡される。
-        webview.Init ((string msg) => {
-            Debug.Log ("Call from Web view : " + msg);
-            DebugText.text = msg;
-        });
+		// WebViewObject の初期化時にWebページ側から呼び出すことができるコールバック関数を定義する。
+		// Web側からコールバック関数呼び出すには、リンク要素の href 属性などURLを指定する箇所で
+		// 'unit:(任意の文字列)' のように指定すると、コールバック関数が呼び出される。
+		// このとき、"(任意の文字列)"の部分が関数の引数として渡される。
+		webview.Init((string msg) => {
+			Debug.Log ("Call from Web view : " + msg);
+			DebugText.text = msg;
 
-        // var url = "file://" + m_filePath;
-        // var url = "https://google.co.jp";
-        var url = "https://tayutaedomo-webview.herokuapp.com/MyWebView.html";
-        Debug.Log(url);
+			if(Regex.IsMatch(msg, @"^fuga")) {
+				webview.SetVisibility(false);
+			}
+		});
 
-        webview.LoadURL(url);
-        webview.SetVisibility(true);
-        webview.SetMargins(10,100,10,10);
-    }
-    
-    // Update is called once per frame
-    void Update () {
-    }
+		// var url = "file://" + m_filePath;
+		// var url = "https://google.co.jp";
+		var url = "https://tayutaedomo-webview.herokuapp.com/MyWebView.html";
+		Debug.Log(url);
 
-    void PrepareHTML() {
-        using(var writer = new StreamWriter(m_filePath, false)) {
-            writer.Write(
+		webview.LoadURL(url);
+		webview.SetVisibility(true);
+		webview.SetMargins(10, 300, 10, 10);
+	}
+	
+	// Update is called once per frame
+	void Update() {
+	}
+
+	void PrepareHTML() {
+		using(var writer = new StreamWriter(m_filePath, false)) {
+			writer.Write(
 @"<html>
 <body>
 Hello unity-webview !!!<br/>
@@ -59,7 +64,7 @@ Hello unity-webview !!!<br/>
 </body>
 </html>
 ");
-            writer.Close();
-        }
-    }
+			writer.Close();
+		}
+	}
 }
